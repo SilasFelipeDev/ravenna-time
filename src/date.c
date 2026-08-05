@@ -32,3 +32,41 @@ int dateValid(Date data){
 
     return 1;
 }
+
+static long long absoluteTime(Date data){
+    long long secondsYear   = data.year * 31536000;
+
+    long long secondsMonth  = 0;
+    for (int i = 0; i < data.month; i++){
+        int n = howDays(i + 1, data.year);
+        secondsMonth += n;
+    }
+    secondsMonth *= 86400;
+
+    long long secondsDay = data.day * 86400;
+    int  secondsHour     = data.hour * 3600;
+    int  secondsMinute   = data.minute * 60;
+    short int seconds    = data.second;
+
+    long long total = secondsYear + secondsMonth + secondsDay + 
+                      secondsHour + secondsMinute + seconds;
+    
+    return total;
+}
+
+void dateDiff(Date inicio, Date fim, DateDiff *resultado){
+    if (absoluteTime(inicio) > absoluteTime(fim)){
+        Date aux = inicio;
+        inicio = fim;
+        fim = aux;
+    }
+
+    int borrow = 0;
+
+    resultado->second = fim.second - inicio.second;
+    resultado->minute = fim.minute - inicio.minute;
+    resultado->hour   = fim.hour   - inicio.hour;
+    resultado->day    = fim.day    - inicio.day;
+    resultado->month  = fim.month  - inicio.month;
+    resultado->year   = fim.year   - inicio.year;
+}
