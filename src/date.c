@@ -37,7 +37,7 @@ static long long absoluteTime(Date data){
     long long secondsYear   = data.year * 31536000;
 
     long long secondsMonth  = 0;
-    for (int i = 0; i < data.month; i++){
+    for (int i = 0; i < data.month - 1; i++){
         int n = howDays(i + 1, data.year);
         secondsMonth += n;
     }
@@ -61,12 +61,39 @@ void dateDiff(Date inicio, Date fim, DateDiff *resultado){
         fim = aux;
     }
 
-    int borrow = 0;
-
     resultado->second = fim.second - inicio.second;
+    if (resultado->second < 0){
+        resultado->second += 60;
+        fim.minute -= 1;
+    }
+
     resultado->minute = fim.minute - inicio.minute;
+    if (resultado->minute < 0){
+        resultado->minute += 60;
+        fim.hour -= 1;
+    }
+
     resultado->hour   = fim.hour   - inicio.hour;
+    if (resultado->hour < 0){
+        resultado->hour += 24;
+        fim.day -= 1;
+    }
+
     resultado->day    = fim.day    - inicio.day;
+    if (resultado->day < 0){
+        fim.month -= 1;
+        if (fim.month == 0){
+            fim.month = 12;
+            fim.year -= 1;
+        }
+        resultado->day += howDays(fim.month, fim.year);
+    }
+
     resultado->month  = fim.month  - inicio.month;
+    if(resultado->month < 0){
+        resultado->month += 12;
+        fim.year -= 1;
+    }
+
     resultado->year   = fim.year   - inicio.year;
 }
