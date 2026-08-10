@@ -1,0 +1,16 @@
+# ==========================
+# Ravenna-Time - .gitignore
+# ==========================
+
+#Executáveis gerados pela Compilação
+ravenna
+ravenna.exe
+
+
+# Arquivos Objeto
+*.o
+*.obj
+
+# Diretório de Build
+build/*
+!build/.gitkeep
