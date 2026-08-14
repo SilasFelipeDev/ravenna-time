@@ -5,6 +5,7 @@
 #Executáveis gerados pela Compilação
 ravenna
 ravenna.exe
+/*.exe
 
 
 # Arquivos Objeto
@@ -14,3 +15,5 @@ ravenna.exe
 # Diretório de Build
 build/*
 !build/.gitkeep
+
+vendor/webview2-headers/*.h

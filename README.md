@@ -42,6 +42,38 @@ ravenna-time/
 └── .gitignore
 ```
 
+## Configuração para desenvolvimento
+
+Após clonar o repositório, inicialize o submódulo da biblioteca `webview`:
+
+```bash 
+git submodule update --init --depth 1
+```
+
+### WINDOWS: obtendo os headers do WebView2
+
+No Windows, a interface gráfica usa o beckend **Microsoft Edge WebView2**. A biblioteca `webview` não inclui o header `WebView2.h` - ele precisa ser **baixado separadamente**, direto do pacote oficial da Microsoft e **copiado manualmente** para `vendor/webview2-headers/`, pois não é versionado no repositório (arquivo grande e específico do Windows).
+
+1. Baixe o pacote (é um `.zip` disfarçado de `.nupkg`).
+No diretório do projeto, na raiz: 
+```powershell
+   Invoke-WebRequest -Uri
+"https://www.nuget.org/api/v2/package/Microsoft.Web.WebView2" -OutFile webview2.nupkg
+```
+> Se usar `curl.exe` em vez do `Invoke-webRequest`, confira o tamanho do arquivo baixado antes de seguir (comando `Get-Item webview2.nupkg`) - o `curl.exe` pode falhar silenciosamente e salvar um arquivo de erro pequeno em vez do pacote real. É esperado um arquivo de aproximadamente 9MB.
+
+2. Extraia o pacote:
+```powershell
+   mkdir libs\webview2
+   tar -xr webview2.nupkg -C libs\webview2
+```
+
+3. Copie os dois arquivos necessários para `vendor/webview2-headers/`, o caminho dentro do pacote extraído é sempre este:<br>
+> libs\webview2\build\native\include\WebView2.h <br>
+> libs\webview2\build\native\include\WebView2EnvironmentOptions.h
+
+4. Após copiar, pode apagar a pasta `libs/` inteira e o arquivo `webview2.nupkg` - ambos não são mais necessários.
+
 ## Futuras funcionalidades
 
 - Interface desktop completa via webview
