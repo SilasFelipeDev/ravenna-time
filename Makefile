@@ -32,8 +32,8 @@ else
 	EXE = 
 	OBJ_PATTERN = build/*.o
 	MKDIR = mkdir -p build
-	WEBVIEW_INCLUDES =
-	WEBVIEW_LIBS = 
+	WEBVIEW_INCLUDES = $(shell pkg-config --cflags gtk+-3.0 webkit2gtk-4.1)
+	WEBVIEW_LIBS = $(shell pkg-config --libs gtk+-3.0 webkit2gtk-4.1)
 endif 
 
 CXXFLAGS += $(WEBVIEW_INCLUDES)

@@ -20,6 +20,7 @@ O objetivo deste repositório é servir como um laboratório de aprendizado para
 - [x] Validação de datas, considerando anos bissextos
 - [x] Testes manuais via terminal (diversos cenários, incluindo bordas de mês e ano)
 - [x] Build automatizado com Makefile (Windows e Linux)
+- [x] Ponte C++ (bridge) compilando com a biblioteca webview (Windows e Linux)
 
 ### Em desenvolvimento
 
@@ -36,7 +37,11 @@ ravenna-time/
 │   └── date.h
 ├── src/
 │   ├── date.c
-│   └── main.c
+│   ├── main.c
+│   └── bridge.cpp
+├── vendor/
+│   ├── webview/
+│   └── webview2-headers/
 ├── README.md
 ├── Makefile
 └── .gitignore
@@ -46,7 +51,7 @@ ravenna-time/
 
 Após clonar o repositório, inicialize o submódulo da biblioteca `webview`:
 
-```bash 
+```bash
 git submodule update --init --depth 1
 ```
 
@@ -55,24 +60,49 @@ git submodule update --init --depth 1
 No Windows, a interface gráfica usa o beckend **Microsoft Edge WebView2**. A biblioteca `webview` não inclui o header `WebView2.h` - ele precisa ser **baixado separadamente**, direto do pacote oficial da Microsoft e **copiado manualmente** para `vendor/webview2-headers/`, pois não é versionado no repositório (arquivo grande e específico do Windows).
 
 1. Baixe o pacote (é um `.zip` disfarçado de `.nupkg`).
-No diretório do projeto, na raiz: 
+   No diretório do projeto, na raiz:
+
 ```powershell
    Invoke-WebRequest -Uri
 "https://www.nuget.org/api/v2/package/Microsoft.Web.WebView2" -OutFile webview2.nupkg
 ```
+
 > Se usar `curl.exe` em vez do `Invoke-webRequest`, confira o tamanho do arquivo baixado antes de seguir (comando `Get-Item webview2.nupkg`) - o `curl.exe` pode falhar silenciosamente e salvar um arquivo de erro pequeno em vez do pacote real. É esperado um arquivo de aproximadamente 9MB.
 
 2. Extraia o pacote:
+
 ```powershell
    mkdir libs\webview2
    tar -xr webview2.nupkg -C libs\webview2
 ```
 
 3. Copie os dois arquivos necessários para `vendor/webview2-headers/`, o caminho dentro do pacote extraído é sempre este:<br>
-> libs\webview2\build\native\include\WebView2.h <br>
-> libs\webview2\build\native\include\WebView2EnvironmentOptions.h
+
+   > libs\webview2\build\native\include\WebView2.h <br>
+   > libs\webview2\build\native\include\WebView2EnvironmentOptions.h
 
 4. Após copiar, pode apagar a pasta `libs/` inteira e o arquivo `webview2.nupkg` - ambos não são mais necessários.
+
+### LINUX: instalando as dependências do GTK3/WebKitGTK
+
+No Linux, a interface gráfica usa **GTK3** (janela e widgets nativos) com **WebKitGTK** (motor de renderização HTML/CSS/JS, baseado no WebKit). Diferente do Windows, aqui não há headers para copiar manualmente - as bibliotecas de desenvolvimento precisam apenas estar **instaladas no sistema**, e o Makefile descobre automaticamente os caminhos de include e as libs de link via `pkg-config`.
+
+1. Instale as bibliotecas de desenvolvimento:
+
+```bash
+sudo apt update
+sudo apt install -y libgtk-3-dev libwebkit2gtk-4.1-dev
+```
+
+2. Rode o build normalmente:
+
+```bash
+make
+```
+
+> Essa instalação é feita no sistema, não no repositório - ela não é versionada e precisa ser repetida em cada ambiente novo (uma nova instação da distro, um novo Codespace, etc.).
+
+Validado em ambiente Linux via GitHub Codespaces.
 
 ## Futuras funcionalidades
 
