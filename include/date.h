@@ -1,6 +1,10 @@
 #ifndef DATE_H
 #define DATE_H
 
+#ifdef __cplusplus
+extern "C"{
+#endif
+
 // ESTA STRUCT REPRESENTA UMA DATA FIXA NO CALENDÁRIO.
 typedef struct{
     short int second;
@@ -24,4 +28,7 @@ typedef struct{
 int dateValid(Date data);
 void dateDiff(Date inicio, Date fim, DateDiff *resultado);
 
+#ifdef __cplusplus
+}
+#endif
 #endif
