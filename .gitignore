@@ -17,3 +17,6 @@ build/*
 !build/.gitkeep
 
 vendor/webview2-headers/*.h
+
+#Configurações do vscode
+.vscode 

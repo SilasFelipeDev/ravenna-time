@@ -14,7 +14,7 @@
 #include "date.h"
 
 int parseDateJson(const char* json, Date* date){
-    char* pointer;
+    const char* pointer;
     int   value;
 
     /*
