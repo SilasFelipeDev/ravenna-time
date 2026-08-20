@@ -1,5 +1,7 @@
 .PHONY: all clean
 
+.DEFAULT_GOAL := all
+
 CC = gcc
 
 CFLAGS = -Wall -Wextra -Iinclude
@@ -16,9 +18,19 @@ CXXFLAGS = -std=c++14 -Wall -Wextra -Iinclude -Ivendor/webview/core/include
 BRIDGE = src/bridge.cpp
 
 BRIDGE_OBJ = build/bridge.o
-# ================ ================== ===============
+# ===================================================
 
+
+# ================    RAVENNA-TIME    ===============
 TARGET = ravenna
+# ===================================================
+
+
+# ================  RAVENNA-TERMINAL  ===============
+TEST_OBJ = build/date.o build/terminal_test.o
+
+TARGET_TERMINAL = ravenna-terminal
+# ===================================================
 
 ifeq ($(OS), Windows_NT)
 	RM = del /Q
@@ -27,6 +39,9 @@ ifeq ($(OS), Windows_NT)
 	MKDIR = if not exist build mkdir build
 	WEBVIEW_INCLUDES = -Ivendor/webview2-headers
 	WEBVIEW_LIBS = -ladvapi32 -lole32 -lshell32 -lshlwapi -luser32 -lversion
+
+.PHONY: ravenna-terminal
+ravenna-terminal: $(TARGET_TERMINAL)$(EXE)
 else
 	RM = rm -f
 	EXE = 
@@ -57,3 +72,7 @@ build/bridge.o: $(BRIDGE) | build
 clean:
 	$(RM) $(OBJ_PATTERN)
 	$(RM) $(TARGET)$(EXE)
+	$(RM) $(TARGET_TERMINAL)$(EXE)
+
+$(TARGET_TERMINAL)$(EXE): $(TEST_OBJ)
+	$(CC) $(TEST_OBJ) -o $@
