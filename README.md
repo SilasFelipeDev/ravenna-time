@@ -21,10 +21,10 @@ O objetivo deste repositório é servir como um laboratório de aprendizado para
 - [x] Testes manuais via terminal (diversos cenários, incluindo bordas de mês e ano)
 - [x] Build automatizado com Makefile (Windows e Linux)
 - [x] Ponte C++ (bridge) compilando com a biblioteca webview (Windows e Linux)
+- [x] Janela nativa via webview, com HTML embutido no executável em tempo de build
 
 ### Em desenvolvimento
 
-- [ ] Integração com webview (ponte C ↔ JS)
 - [ ] Interface em HTML/CSS/JS
 - [ ] Geração de executáveis (.exe para Windows, binário para Linux)
 
@@ -34,11 +34,17 @@ O objetivo deste repositório é servir como um laboratório de aprendizado para
 ravenna-time/
 ├── build/
 ├── include/
+│   ├── bridge.h
 │   └── date.h
 ├── src/
+│   ├── bridge.cpp
 │   ├── date.c
-│   ├── main.c
-│   └── bridge.cpp
+│   ├── main.cpp
+│   └── terminal_test.c
+├── tools/
+│   └── embed_html.py
+├── ui/
+│   └── index.html
 ├── vendor/
 │   ├── webview/
 │   └── webview2-headers/
@@ -54,6 +60,7 @@ Após clonar o repositório, inicialize o submódulo da biblioteca `webview`:
 ```bash
 git submodule update --init --depth 1
 ```
+O processo de build depende de **Python 3**, usado para embutir o HTML da interface diretamente no executável final. Certifique-se de ter o Python 3 instalado e disponível no terminal antes de compilar.
 
 ### WINDOWS: obtendo os headers do WebView2
 
@@ -103,6 +110,12 @@ make
 > Essa instalação é feita no sistema, não no repositório - ela não é versionada e precisa ser repetida em cada ambiente novo (uma nova instação da distro, um novo Codespace, etc.).
 
 Validado em ambiente Linux via GitHub Codespaces.
+
+## Interface embutida no executável
+
+A interface (`ui/index.html`) não é lida do disco em tempo de execução - ela é convertida em uma string C durante o build (via `tools/embed_html.py`) e compilada diretamente dentro do binário. O resultado é um executável autossuficiente: nenhum arquivo `.html` precisa acompanhar o `.exe`/binário para a aplicação funcionar.
+
+Esse passo roda automáticamente como parte do `make`, sempre que `ui/index.html` for modificado.
 
 ## Futuras funcionalidades
 
