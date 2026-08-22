@@ -12,6 +12,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "date.h"
+#include "bridge.h"
 
 int parseDateJson(const char* json, Date* date){
     const char* pointer;
