@@ -48,9 +48,11 @@ ifeq ($(OS), Windows_NT)
 	RM = del /Q
 	EXE = .exe
 	OBJ_PATTERN = build\*.o
+	UI_HEADER_CLEAN = build\ui_html.h
 	MKDIR = if not exist build mkdir build
 	WEBVIEW_INCLUDES = -Ivendor/webview2-headers
 	WEBVIEW_LIBS = -ladvapi32 -lole32 -lshell32 -lshlwapi -luser32 -lversion
+	PYTHON = python
 
 .PHONY: ravenna-terminal
 ravenna-terminal: $(TARGET_TERMINAL)$(EXE)
@@ -58,9 +60,11 @@ else
 	RM = rm -f
 	EXE = 
 	OBJ_PATTERN = build/*.o
+	UI_HEADER_CLEAN = build/ui_html.h
 	MKDIR = mkdir -p build
 	WEBVIEW_INCLUDES = $(shell pkg-config --cflags gtk+-3.0 webkit2gtk-4.1)
 	WEBVIEW_LIBS = $(shell pkg-config --libs gtk+-3.0 webkit2gtk-4.1)
+	PYTHON = python3
 endif 
 
 CXXFLAGS += $(WEBVIEW_INCLUDES)
@@ -71,7 +75,7 @@ $(TARGET)$(EXE): $(RAVENNA_OBJ)
 	$(CXX) $(RAVENNA_OBJ) $(WEBVIEW_LIBS) -o $@
 
 $(UI_HEADER): $(UI_HTML) | build
-	python3 tools/embed_html.py $(UI_HTML) $(UI_HEADER) INDEX_HTML
+	$(PYTHON) tools/embed_html.py $(UI_HTML) $(UI_HEADER) INDEX_HTML
 
 $(MAIN_OBJ): $(MAIN_SRC) $(UI_HEADER) | build
 	$(CXX) $(CXXFLAGS) -c $(MAIN_SRC) -o $@
@@ -89,7 +93,7 @@ build/bridge.o: $(BRIDGE) | build
 
 clean:
 	$(RM) $(OBJ_PATTERN)
-	$(RM) $(UI_HEADER)
+	$(RM) $(UI_HEADER_CLEAN)
 	$(RM) $(TARGET)$(EXE)
 	$(RM) $(TARGET_TERMINAL)$(EXE)
 
