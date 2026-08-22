@@ -6,27 +6,37 @@ int main(void){
     Date fim;
     DateDiff resultado;
 
+    int lidos; 
+
     do {
-        printf("Digite uma Data Inicial: ");
-        scanf("%hd/%hd/%ld %hd:%hd:%hd",
-              &inicio.day, &inicio.month, &inicio.year, 
-              &inicio.hour, &inicio.minute, &inicio.second
+        printf("Digite uma Data Inicial (dd/mm/yyyy hh:mm:ss): ");
+        lidos = scanf("%hd/%hd/%ld %hd:%hd:%hd",
+                      &inicio.day, &inicio.month, &inicio.year, 
+                      &inicio.hour, &inicio.minute, &inicio.second
         );
-        if (dateValid(inicio) == 0){
+
+        int c; 
+        while ((c = getchar()) != '\n' && c != EOF); // Limpa o resto do Buffer
+
+        if (lidos != 6 || dateValid(inicio) == 0){
             printf("Data Invalida! Digite Novamente\n");
         } 
-     } while (!dateValid(inicio));
+     } while (lidos != 6 || !dateValid(inicio));
     
     do {
-        printf("Digite uma Data Final: ");
-        scanf("%hd/%hd/%ld %hd:%hd:%hd", 
-              &fim.day, &fim.month, &fim.year,
-              &fim.hour, &fim.minute, &fim.second
+        printf("Digite uma Data Final (dd/mm/yyyy hh:mm:ss): ");
+        lidos = scanf("%hd/%hd/%ld %hd:%hd:%hd", 
+                      &fim.day, &fim.month, &fim.year,
+                      &fim.hour, &fim.minute, &fim.second
         );
-        if (dateValid(fim) == 0){
+
+        int c;
+        while ((c = getchar()) != '\n' && c != EOF); // Limpa o resto do Buffer
+
+        if (lidos != 6 || dateValid(fim) == 0){
             printf("Data Invalida! Digite Novamente\n");
         }
-    } while (!dateValid(fim));
+    } while (lidos != 6 || !dateValid(fim));
 
     dateDiff(inicio, fim, &resultado);
 
