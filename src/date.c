@@ -34,7 +34,7 @@ int dateValid(Date data){
 }
 
 static long long absoluteTime(Date data){
-    long long secondsYear   = data.year * 31536000;
+    long long secondsYear   = (long long)data.year * 31536000;
 
     long long secondsMonth  = 0;
     for (int i = 0; i < data.month - 1; i++){
