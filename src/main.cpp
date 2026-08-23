@@ -13,6 +13,7 @@ int main(){
 
     w.set_title("Ravenna Time");
     w.set_size(800, 600, WEBVIEW_HINT_NONE);
+    w.set_size(800, 600, WEBVIEW_HINT_MIN);
 
     // expoe calculateDiff (definida em bridge.cpp) pro JS
     w.bind("calculateDiff", calculateDiff);
