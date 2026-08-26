@@ -8,7 +8,7 @@
 
 import sys # da acesso a sys.argv, a lista de argumentos passados na linha de comando
 
-def embed(html_path, css_path, output_path, var_name):
+def embed(html_path, css_path, js_path, output_path, var_name):
     # abre o arquivo .html de entrada em modo leitura (texto, UTF-8)
     # o "with" garante que o arquivo seja fechado sozinho ao final do bloco
     with open(html_path, 'r', encoding='utf-8') as html:
@@ -17,9 +17,15 @@ def embed(html_path, css_path, output_path, var_name):
     # abre o arquivo .css de entrada em modo de leitura (texto, UTF-8)
     with open(css_path, 'r', encoding='utf-8') as css:
         css_content = css.read()
+    
+    #abre o arquivo .js de entrada em modo de leitura (texto, UTF-8)
+    with open(js_path, 'r', encoding='utf-8') as js:
+        js_content = js.read()
 
     style_block = f"<style>\n{css_content}\n</style>"
+    script_block = f"<script>\n{js_content}\n</script>"
     content = content.replace("<!-- CSS_HERE -->", style_block)
+    content = content.replace("<!-- JS-HERE -->", script_block)
 
     # Prepara o conteudo para virar uma String C valida (escaping):
     # 1) toda barra invertida vira barra dupla, senão o C interpreta errado
@@ -38,9 +44,10 @@ def embed(html_path, css_path, output_path, var_name):
 # só executa embed(...) se o script for rodado diretamente por esse arquivo
 # (não executa se este arquivo for importado por outro script python)
 if __name__ == "__main__":
-    # Pega os 4 argumentos da linha de comando:
+    # Pega os 5 argumentos da linha de comando:
     # sys.argv[1] = caminho do .html de entrada
     # sys.argv[2] = caminho do .css de entrada
-    # sys.argv[3] = caminho do .h de saida
-    # sys.argv[4] = nome da variavel C a ser gerada
-    embed(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])
+    # sys.argv[3] = caminho do .js de entrada
+    # sys.argv[4] = caminho do .h de saida
+    # sys.argv[5] = nome da variavel C a ser gerada
+    embed(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5])

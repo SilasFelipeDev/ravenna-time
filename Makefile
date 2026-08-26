@@ -38,10 +38,12 @@ TEST_OBJ = build/date.o build/terminal_test.o
 TARGET_TERMINAL = ravenna-terminal
 # ===================================================
 
-# ==============   EMBED UI HTML/CSS   ==============
+# =============   EMBED UI HTML/CSS/JS   ============
 UI_HTML = ui/index.html
 
 UI_CSS = ui/css/style.css
+
+UI_JS = ui/js/app.js
 
 UI_HEADER = build/ui_html.h
 # ===================================================
@@ -76,8 +78,8 @@ all: $(TARGET)$(EXE)
 $(TARGET)$(EXE): $(RAVENNA_OBJ)
 	$(CXX) $(RAVENNA_OBJ) $(WEBVIEW_LIBS) -o $@
 
-$(UI_HEADER): $(UI_HTML) $(UI_CSS) | build
-	$(PYTHON) tools/embed_html.py $(UI_HTML) $(UI_CSS) $(UI_HEADER) INDEX_HTML
+$(UI_HEADER): $(UI_HTML) $(UI_CSS) $(UI_JS) | build
+	$(PYTHON) tools/embed_html.py $(UI_HTML) $(UI_CSS) $(UI_JS) $(UI_HEADER) INDEX_HTML
 
 $(MAIN_OBJ): $(MAIN_SRC) $(UI_HEADER) | build
 	$(CXX) $(CXXFLAGS) -c $(MAIN_SRC) -o $@
