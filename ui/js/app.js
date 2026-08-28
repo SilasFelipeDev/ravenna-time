@@ -18,12 +18,12 @@ const outputDiv    = document.querySelector(".output");
 const submitButton = document.querySelector("button");
 
 // ================================================================
-// FUNÇÃO 1: buildDateJson(dateValue, timeValue)
+// FUNÇÃO 1: buildDateObject(dateValue, timeValue)
 // ================================================================
 // Recebe duas strings vindas dos inputs: 
 //   dateValue = "yyyy-mm-dd" (padrão do <input type="date">)
 //   timeValue = "hh:mm:ss"   (padrão do <input type="time">)
-// Devolve uma string JSON pronta, no formato que o parseDateJson (C++) espera.
+// Devolve um OBJETO JS, no formato que o parseDateJson (C++) espera.
 
 function buildDateObject(dateValue, timeValue){
     // .split("-") quebra a string em pedaços, usando "-" como separador, 
@@ -33,7 +33,7 @@ function buildDateObject(dateValue, timeValue){
     // Mesma lógica pro horário, separador ":"
     const timeParts = timeValue.split(":");
 
-    // Retornamos um OBJETO JS. O Webview.h serializa objetos passados 
+    // Retornamos um OBJETO JS. O webview.h serializa objetos passados 
     // como argumento diretamente como JSON de verdade - sem aspas extras
     // nem escaping. Se retornássemos uma string, o webview.h trataria o 
     // texto como um VALOR string e escaparia as aspas internas (\"year\" em vez de 
@@ -59,7 +59,7 @@ function buildDateObject(dateValue, timeValue){
 // o resultado (ou erro) dentro da .output
 
 function displayResult(response){
-    // webview.h já entraga o retorno do C++ como objeto JS (parse automático),
+    // webview.h já entrega o retorno do C++ como objeto JS (parse automático),
     // então "response" já é um objeto - não precisa de JSON.parse aqui
     const result = response;
 
@@ -81,7 +81,7 @@ function displayResult(response){
 }
 
 // ================================================================
-// FUNÇÃO 4: clearForm()
+// FUNÇÃO 3: clearForm()
 // ================================================================
 // Zera os 4 campos e o output
 
@@ -147,7 +147,7 @@ async function handleSubmit(event){
 // PASSO FINAL: registrar o listener
 // ================================================================
 // Toda vez que o form for submetido (Enter ou clique no botão),
-// handleSubmite é chamada automáticamente, recebendo o evento.
+// handleSubmit é chamada automaticamente, recebendo o evento.
 
 form.addEventListener("submit", handleSubmit);
 
