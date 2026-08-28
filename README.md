@@ -21,12 +21,10 @@ O objetivo deste repositório é servir como um laboratório de aprendizado para
 - [x] Testes manuais via terminal (diversos cenários, incluindo bordas de mês e ano)
 - [x] Build automatizado com Makefile (Windows e Linux)
 - [x] Ponte C++ (bridge) compilando com a biblioteca webview (Windows e Linux)
-- [x] Janela nativa via webview, com HTML embutido no executável em tempo de build
+- [x] Janela nativa via webview, com HTML/CSS/JS embutidos no executável em tempo de build
+- [x] Interface em HTML/CSS/JS, conectada à lógica em C via bridge 
+- [x] Geração de executáveis (.exe no Windows, binário para Linux)
 
-### Em desenvolvimento
-
-- [ ] Interface em HTML/CSS/JS
-- [ ] Geração de executáveis (.exe para Windows, binário para Linux)
 
 ## Estrutura
 
@@ -44,13 +42,22 @@ ravenna-time/
 ├── tools/
 │   └── embed_html.py
 ├── ui/
+│   ├── assets/
+│   │   └── icons
+│   │       └── dog-paw.svg
+│   ├── css/
+│   │   └── style.css
+│   ├── js/    
+│   │   └── app.js
 │   └── index.html
 ├── vendor/
 │   ├── webview/
 │   └── webview2-headers/
-├── README.md
+├── .gitignore
+├── .gitmodules
+├── LICENSE
 ├── Makefile
-└── .gitignore
+└── README.md
 ```
 
 ## Configuração para desenvolvimento
@@ -60,7 +67,7 @@ Após clonar o repositório, inicialize o submódulo da biblioteca `webview`:
 ```bash
 git submodule update --init --depth 1
 ```
-O processo de build depende de **Python 3**, usado para embutir o HTML da interface diretamente no executável final. Certifique-se de ter o Python 3 instalado e disponível no terminal antes de compilar.
+O processo de build depende de **Python 3**, usado para embutir o HTML/CSS/JS da interface diretamente no executável final. Certifique-se de ter o Python 3 instalado e disponível no terminal antes de compilar.
 
 ### WINDOWS: obtendo os headers do WebView2
 
@@ -113,15 +120,13 @@ Validado em ambiente Linux via GitHub Codespaces.
 
 ## Interface embutida no executável
 
-A interface (`ui/index.html`) não é lida do disco em tempo de execução - ela é convertida em uma string C durante o build (via `tools/embed_html.py`) e compilada diretamente dentro do binário. O resultado é um executável autossuficiente: nenhum arquivo `.html` precisa acompanhar o `.exe`/binário para a aplicação funcionar.
+A interface (`ui/index.html`, `ui/css/style.css` e `ui/js/app.js`) não é lida do disco em tempo de execução - os três arquivos são combinados e convertidos em uma única string C durante o build (via `tools/embed_html.py`) e compilados diretamente dentro do binário. O resultado é um executável autossuficiente: nenhum arquivo `.html`, `.css`, `.js` precisa acompanhar o `.exe`/binário para a aplicação funcionar.
 
-Esse passo roda automáticamente como parte do `make`, sempre que `ui/index.html` for modificado.
+Esse passo roda automáticamente como parte do `make`, sempre que `ui/index.html`, `ui/css/style.css` ou `ui/js/app.js` forem modificados.
 
 ## Futuras funcionalidades
 
-- Interface desktop completa via webview
-- Camada de polish visual (HTML/CSS/JS)
-- Empacotamento final dos executáveis para Windows e Linux
+- Empacotamento de releases distribuíveis para Windows e Linux
 
 ## Licença
 

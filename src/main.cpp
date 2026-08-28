@@ -9,7 +9,7 @@
 #include "bridge.h"          // declaracao de calculateDiff
 
 int main(){
-    webview::webview w(true, nullptr);
+    webview::webview w(false, nullptr);
 
     w.set_title("Ravenna Time");
     w.set_size(800, 600, WEBVIEW_HINT_NONE);
