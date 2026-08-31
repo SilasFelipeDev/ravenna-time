@@ -57,6 +57,7 @@ ifeq ($(OS), Windows_NT)
 	WEBVIEW_INCLUDES = -Ivendor/webview2-headers
 	WEBVIEW_LIBS = -ladvapi32 -lole32 -lshell32 -lshlwapi -luser32 -lversion
 	PYTHON = python
+	LDFLAGS = -static-libgcc -static-libstdc++ -static
 
 .PHONY: ravenna-terminal
 ravenna-terminal: $(TARGET_TERMINAL)$(EXE)
@@ -69,6 +70,7 @@ else
 	WEBVIEW_INCLUDES = $(shell pkg-config --cflags gtk+-3.0 webkit2gtk-4.1)
 	WEBVIEW_LIBS = $(shell pkg-config --libs gtk+-3.0 webkit2gtk-4.1)
 	PYTHON = python3
+	LDFLAGS =
 endif 
 
 CXXFLAGS += $(WEBVIEW_INCLUDES)
@@ -76,7 +78,7 @@ CXXFLAGS += $(WEBVIEW_INCLUDES)
 all: $(TARGET)$(EXE)
 
 $(TARGET)$(EXE): $(RAVENNA_OBJ)
-	$(CXX) $(RAVENNA_OBJ) $(WEBVIEW_LIBS) -o $@
+	$(CXX) $(RAVENNA_OBJ) $(LDFLAGS) $(WEBVIEW_LIBS) -o $@
 
 $(UI_HEADER): $(UI_HTML) $(UI_CSS) $(UI_JS) | build
 	$(PYTHON) tools/embed_html.py $(UI_HTML) $(UI_CSS) $(UI_JS) $(UI_HEADER) INDEX_HTML
