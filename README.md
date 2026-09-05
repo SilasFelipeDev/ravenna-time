@@ -24,6 +24,7 @@ O objetivo deste repositório é servir como um laboratório de aprendizado para
 - [x] Janela nativa via webview, com HTML/CSS/JS embutidos no executável em tempo de build
 - [x] Interface em HTML/CSS/JS, conectada à lógica em C via bridge 
 - [x] Geração de executáveis (.exe no Windows, binário para Linux)
+- [x] Empacotamento de releases distribuíveis para Windows e Linux
 
 
 ## Estrutura
@@ -60,6 +61,23 @@ ravenna-time/
 └── README.md
 ```
 
+## Como usar sem precisar compilar?
+Se você só quer usar o Ravenna-Time sem precisar instalar compiladores, Python ou qualquer ferramenta de desenvolvimento, baixe o executável já compilado, direto na página de [Releases](https://github.com/SilasFelipeDev/ravenna-time/releases). 
+
+1. Acesse a [última release](https://github.com/SilasFelipeDev/ravenna-time/releases/latest)
+2. Na seção de **Assets**, baixe o arquivo correspondente ao seu sistema operacional:
+   - **Windows**: `ravenna-time-windows.exe`
+   - **Linux**: `ravenna-time-linux`
+3. **Windows**: dê duplo clique no arquivo `.exe` para abrir o programa
+   - Caso o Microsoft Defender Bloqueie, selecione "Mais Informações" -> "Executar assim Mesmo"
+4. **Linux**: dê permissão de execução antes de rodar. Navegue até o diretório do arquivo e pelo terminal execute:
+```bash
+   chmod +x ravenna-time-linux
+   ./ravenna-time-linux
+```
+
+Nenhuma outra etapa é necessária - o executável é autossuficiente e não depende de bibliotecas externas para funcionar.
+
 ## Configuração para desenvolvimento
 
 Após clonar o repositório, inicialize o submódulo da biblioteca `webview`:
@@ -87,7 +105,7 @@ No Windows, a interface gráfica usa o beckend **Microsoft Edge WebView2**. A bi
 
 ```powershell
    mkdir libs\webview2
-   tar -xr webview2.nupkg -C libs\webview2
+   tar -xf webview2.nupkg -C libs\webview2
 ```
 
 3. Copie os dois arquivos necessários para `vendor/webview2-headers/`, o caminho dentro do pacote extraído é sempre este:<br>
@@ -123,10 +141,6 @@ Validado em ambiente Linux via GitHub Codespaces.
 A interface (`ui/index.html`, `ui/css/style.css` e `ui/js/app.js`) não é lida do disco em tempo de execução - os três arquivos são combinados e convertidos em uma única string C durante o build (via `tools/embed_html.py`) e compilados diretamente dentro do binário. O resultado é um executável autossuficiente: nenhum arquivo `.html`, `.css`, `.js` precisa acompanhar o `.exe`/binário para a aplicação funcionar.
 
 Esse passo roda automáticamente como parte do `make`, sempre que `ui/index.html`, `ui/css/style.css` ou `ui/js/app.js` forem modificados.
-
-## Futuras funcionalidades
-
-- Empacotamento de releases distribuíveis para Windows e Linux
 
 ## Licença
 
